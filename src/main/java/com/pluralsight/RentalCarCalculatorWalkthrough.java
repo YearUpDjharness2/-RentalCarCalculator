@@ -5,6 +5,15 @@ public class RentalCarCalculatorWalkthrough {
 
     public static void main(String[] args) {
 
+        //known Values
+        double priceOfCarRentalPerDay = 29.99;
+        double priceOfTollTagPerDay = 3.95;
+        double priceOfGPSPerDay = 2.95;
+        double priceOfRoadsideAssistancePerDay = 3.95;
+        float underageSurchargePercentage = 0.30f;
+        int underageSurchargeCutOffAge =25;
+
+
 
         //est. known values
         String pickupDate = PromptForString("When will you pick this up? (Ex. YYYY/MM/DD): ");
@@ -16,34 +25,34 @@ public class RentalCarCalculatorWalkthrough {
 
 
         //calculate unknown values
-        double basicCarRentalFee =29.99 ;
-        double gps = 3.95;
-        double roadsideAssistance = 3.95;
-        double tollTag = 3.95;
-        double optionsTotalFee =0;
-        double underageSurcharge =0.30;
-        double totalCost = 0;
+        double basicCarRentalFee = numberOfDays * priceOfCarRentalPerDay;
+        double costOfTollTag = (needsTollTag) ? (numberOfDays * priceOfTollTagPerDay) : 0;
+        double costOfGPS = (needsGPS) ? (numberOfDays * priceOfGPSPerDay) : 0;
+        double costOfRoadsideAssistance = (needsRoadsideAssistance) ? (numberOfDays * priceOfRoadsideAssistancePerDay) : 0;
+        double optionsTotalFee = costOfTollTag + costOfGPS + costOfRoadsideAssistance;
+        double underageSurcharge = (age < underageSurchargeCutOffAge) ? basicCarRentalFee * underageSurchargePercentage : 0;
+        double totalCost = basicCarRentalFee + optionsTotalFee + underageSurcharge;
 
 
 
 
         //calculate results
-      double basicRentalCost = basicCarRentalFee * numberOfDays;
-      double optionscost = 0.0;
+
+        double optionscost = 0.0;
 
       if (needsTollTag){
-          optionscost += tollTag * numberOfDays;
+          optionscost += priceOfTollTagPerDay * numberOfDays;
       }
       if (needsGPS){
-          optionscost += gps * numberOfDays;
+          optionscost += priceOfGPSPerDay * numberOfDays;
       }
       if (needsRoadsideAssistance){
-          optionscost += roadsideAssistance * numberOfDays;
+          optionscost += priceOfRoadsideAssistancePerDay * numberOfDays;
       }
       //Add underage surcharge
         double underageRate  = (age < 25) ? (basicCarRentalFee * underageSurcharge) : 0.0;
       //total cost
-        totalCost = basicRentalCost + optionscost + underageSurcharge;
+        totalCost = basicCarRentalFee + optionscost + underageSurcharge;
 
         //display results
         System.out.printf("Basic Car Rental Fee:   %.2f\n", basicCarRentalFee);
@@ -52,7 +61,7 @@ public class RentalCarCalculatorWalkthrough {
         System.out.println("-------------------------------------");
         System.out.printf("Total:                   %.2f\n", totalCost);
 
-
+        System.out.println("Pickup Date");
     }
 
 
